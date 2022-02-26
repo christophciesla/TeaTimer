@@ -15,13 +15,13 @@ endif()
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
-add_executable(WinTeaTimer
+add_executable(WinTeaTimer WIN32
     source/Window.cpp
     source/Window.h
     source/main.cpp
 )
 
-target_link_libraries(WinTeaTimer Qt5::Widgets)
+target_link_libraries(WinTeaTimer Qt5::Widgets Qt5::WinMain)
 
 add_custom_command(TARGET WinTeaTimer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Core> $<TARGET_FILE_DIR:WinTeaTimer>
