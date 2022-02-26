@@ -14,8 +14,8 @@ Window::Window(QWidget* parent)
 	, stop_button_{ new QPushButton{tr("Stop")} }
 	, timer_{}
 	, running_{ false }
-	, sec_total_{ 0U }
-	, sec_count_{ 0U }
+	, sec_total_{ 0 }
+	, sec_count_{ 0 }
 	, taskbar_item_{ nullptr }
 {
 	UpdateTitle();
