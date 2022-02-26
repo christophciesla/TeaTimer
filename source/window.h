@@ -27,18 +27,16 @@ private:
 
 	ITaskbarList3* taskbar_item_;
 
-	void keyPressEvent(QKeyEvent* ev) override;
-
 	void UpdateTitle();
 	void UpdateStartButton(const QTime& time);
 	void UpdateWidgets();
 	void UpdateTaskbar();
 
-private Q_SLOTS:
-	void on_timer_timeout();
-	void on_start_clicked();
-	void on_stop_clicked();
-	void on_time_timeChanged(const QTime& time);
+	void StartTimer();
+	void StopTimer();
+	void TimerTimeout();
+
+	void keyPressEvent(QKeyEvent* ev) override;
 };
 
 #endif

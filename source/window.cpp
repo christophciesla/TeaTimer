@@ -46,10 +46,10 @@ Window::Window(QWidget* parent)
 	push_button_layout->addWidget(stop_button_);
 	layout->addLayout(push_button_layout);
 
-	std::ignore = connect(start_button_, SIGNAL(clicked()), SLOT(on_start_clicked()));
-	std::ignore = connect(stop_button_, SIGNAL(clicked()), SLOT(on_stop_clicked()));
-	std::ignore = connect(time_, SIGNAL(timeChanged(const QTime&)), SLOT(on_time_timeChanged(const QTime&)));
-	std::ignore = connect(&timer_, SIGNAL(timeout()), SLOT(on_timer_timeout()));
+	std::ignore = connect(start_button_, &QPushButton::clicked, [this]() { StartTimer(); });
+	std::ignore = connect(stop_button_, &QPushButton::clicked, [this]() { StopTimer(); });
+	std::ignore = connect(time_, &QTimeEdit::timeChanged, [this](const QTime& time) {UpdateStartButton(time); });
+	std::ignore = connect(&timer_, &QTimer::timeout, [this]() { TimerTimeout(); });
 
 	// Init task bar item
 	std::ignore = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast< void** >(&taskbar_item_));
@@ -94,7 +94,7 @@ void Window::UpdateTaskbar()
 	{
 		if (running_)
 		{
-			taskbar_item_->SetProgressValue(reinterpret_cast<HWND>(winId()), sec_total_ - sec_count_, sec_total_ - 1);
+			taskbar_item_->SetProgressValue(reinterpret_cast<HWND>(winId()), sec_total_ - sec_count_ + 1, sec_total_);
 		}
 		else
 		{
@@ -103,7 +103,7 @@ void Window::UpdateTaskbar()
 	}
 }
 
-void Window::on_start_clicked()
+void Window::StartTimer()
 {
 	running_ = true;
 	sec_count_ = time_->time().minute() * 60 + time_->time().second();
@@ -114,7 +114,7 @@ void Window::on_start_clicked()
 	UpdateWidgets();
 }
 
-void Window::on_stop_clicked()
+void Window::StopTimer()
 {
 	running_ = false;
 	timer_.stop();
@@ -125,7 +125,7 @@ void Window::on_stop_clicked()
 	UpdateWidgets();
 }
 
-void Window::on_timer_timeout()
+void Window::TimerTimeout()
 {
 	--sec_count_;
 	time_->setTime(QTime{ 0, sec_count_ / 60, sec_count_ % 60 });
@@ -133,14 +133,9 @@ void Window::on_timer_timeout()
 	UpdateTaskbar();
 	if (sec_count_ == 0)
 	{
-		on_stop_clicked();
+		StopTimer();
 		::LockWorkStation();
 	}
-}
-
-void Window::on_time_timeChanged(const QTime& time)
-{
-	UpdateStartButton(time);
 }
 
 void Window::keyPressEvent(QKeyEvent* ev)
@@ -149,14 +144,14 @@ void Window::keyPressEvent(QKeyEvent* ev)
 	{
 		if (!running_)
 		{
-			on_start_clicked();
+			StartTimer();
 		}
 	}
 	if (ev->key() == Qt::Key_Escape)
 	{
 		if (running_)
 		{
-			on_stop_clicked();
+			StopTimer();
 		}
 	}
 }
