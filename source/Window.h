@@ -10,7 +10,7 @@ class Window : public QWidget
 
 public:
 	Window(QWidget* parent = 0);
-	~Window();
+	~Window() override;
 
 private:
 	QTimeEdit* time_;
@@ -25,7 +25,9 @@ private:
 
 	ITaskbarList3* taskbar_item_;
 
-	void keyPressEvent(QKeyEvent* ev);
+	void keyPressEvent(QKeyEvent* ev) override;
+
+	void UpdateTitle();
 
 private Q_SLOTS:
 	void on_timer_timeout();

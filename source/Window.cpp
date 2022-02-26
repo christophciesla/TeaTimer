@@ -20,6 +20,8 @@ Window::Window(QWidget* parent)
 	time_->setDisplayFormat("mm:ss");
 	time_->setMinimumTime(QTime(0, 0, 0, 0));
 	time_->setMaximumTime(QTime(0, 59, 59, 999));
+	time_->setMinimumWidth(240);
+	time_->setAlignment(Qt::AlignCenter);
 
 	timer_.setSingleShot(false);
 	timer_.setInterval(1000);
@@ -39,7 +41,6 @@ Window::Window(QWidget* parent)
 	QHBoxLayout* push_button_layout = new QHBoxLayout;
 	push_button_layout->addWidget(start_button_);
 	push_button_layout->addWidget(stop_button_);
-	push_button_layout->addStretch();
 	layout->addLayout(push_button_layout);
 
 	bool ok = true;
@@ -61,9 +62,14 @@ Window::~Window()
 	}
 }
 
-void Window::on_start_clicked()
+void Window::UpdateTitle()
 {
 	setWindowTitle(time_->time().toString("mm:ss") + " - " + kWindowTitle);
+}
+
+void Window::on_start_clicked()
+{
+	UpdateTitle();
 	sec_count_ = time_->time().minute() * 60 + time_->time().second();
 	sec_total_ = sec_count_;
 	if (taskbar_item_)
@@ -99,7 +105,7 @@ void Window::on_timer_timeout()
 		taskbar_item_->SetProgressValue(reinterpret_cast<HWND>(winId()), sec_count_, sec_total_);
 	}
 	QTime time(0, sec_count_ / 60, sec_count_ % 60);
-	setWindowTitle(time.toString("mm:ss") + " - " + kWindowTitle);
+	UpdateTitle();
 	time_->blockSignals(true);
 	time_->setTime(time);
 	time_->blockSignals(false);
