@@ -16,8 +16,8 @@ endif()
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
 add_executable(WinTeaTimer WIN32
-    source/Window.cpp
-    source/Window.h
+    source/window.cpp
+    source/window.h
     source/main.cpp
 )
 

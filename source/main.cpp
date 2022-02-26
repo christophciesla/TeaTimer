@@ -1,12 +1,12 @@
 #include <QtGui>
 
-#include "Window.h"
+#include "window.h"
 
 int main(int argc, char* argv[])
 {
 	QApplication app(argc, argv);
 
-	Window window;
+	Window window{};
 	window.show();
 
 	return app.exec();
