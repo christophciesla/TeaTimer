@@ -2,6 +2,7 @@
 #define _WINDOW_H_
 
 #include <QtWidgets>
+#include <cstdint>
 #include "Shobjidl.h"
 
 class Window : public QWidget
@@ -20,14 +21,18 @@ private:
 
 	QTimer timer_;
 
-	unsigned int sec_total_;
-	unsigned int sec_count_;
+	bool running_;
+	std::int32_t sec_total_;
+	std::int32_t sec_count_;
 
 	ITaskbarList3* taskbar_item_;
 
 	void keyPressEvent(QKeyEvent* ev) override;
 
 	void UpdateTitle();
+	void UpdateStartButton(const QTime& time);
+	void UpdateWidgets();
+	void UpdateTaskbar();
 
 private Q_SLOTS:
 	void on_timer_timeout();
