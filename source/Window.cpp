@@ -2,15 +2,20 @@
 
 #include <Windows.h>
 
+namespace
+{
+	const QString kWindowTitle{ "Windows tea timer" };
+}
+
 Window::Window(QWidget* parent)
 	: QWidget(parent)
 	, time_(new QTimeEdit)
-	, start_button_(new QPushButton("Starten"))
-	, stop_button_(new QPushButton("Stoppen"))
+	, start_button_(new QPushButton(tr("Start")))
+	, stop_button_(new QPushButton(tr("Stop")))
 	, sec_count_(0)
 	, taskbar_item_(0)
 {
-	setWindowTitle("Tea timer");
+	setWindowTitle(kWindowTitle);
 
 	time_->setDisplayFormat("mm:ss");
 	time_->setMinimumTime(QTime(0, 0, 0, 0));
@@ -25,17 +30,17 @@ Window::Window(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout;
 	setLayout(layout);
 
-	QHBoxLayout* timeSetLayout = new QHBoxLayout;
-	timeSetLayout->addWidget(new QLabel("Zeit:"));
-	timeSetLayout->addWidget(time_);
-	timeSetLayout->addStretch();
-	layout->addLayout(timeSetLayout);
+	QHBoxLayout* time_set_layout = new QHBoxLayout;
+	time_set_layout->addWidget(new QLabel(tr("Time:")));
+	time_set_layout->addWidget(time_);
+	time_set_layout->addStretch();
+	layout->addLayout(time_set_layout);
 
-	QHBoxLayout* pbLayout = new QHBoxLayout;
-	pbLayout->addWidget(start_button_);
-	pbLayout->addWidget(stop_button_);
-	pbLayout->addStretch();
-	layout->addLayout(pbLayout);
+	QHBoxLayout* push_button_layout = new QHBoxLayout;
+	push_button_layout->addWidget(start_button_);
+	push_button_layout->addWidget(stop_button_);
+	push_button_layout->addStretch();
+	layout->addLayout(push_button_layout);
 
 	bool ok = true;
 	ok &= static_cast<bool>(connect(start_button_, SIGNAL(clicked()), SLOT(on_start_clicked())));
@@ -44,7 +49,7 @@ Window::Window(QWidget* parent)
 	ok &= static_cast<bool>(connect(&timer_, SIGNAL(timeout()), SLOT(on_timer_timeout())));
 
 	// Init task bar item
-	CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast< void** >(&taskbar_item_));
+	std::ignore = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast< void** >(&taskbar_item_));
 }
 
 Window::~Window()
@@ -58,7 +63,7 @@ Window::~Window()
 
 void Window::on_start_clicked()
 {
-	setWindowTitle(time_->time().toString("mm:ss") + " - Tea timer");
+	setWindowTitle(time_->time().toString("mm:ss") + " - " + kWindowTitle);
 	sec_count_ = time_->time().minute() * 60 + time_->time().second();
 	sec_total_ = sec_count_;
 	if (taskbar_item_)
@@ -73,7 +78,7 @@ void Window::on_start_clicked()
 
 void Window::on_stop_clicked()
 {
-	setWindowTitle("Tea timer");
+	setWindowTitle(kWindowTitle);
 	if (taskbar_item_)
 	{
 		taskbar_item_->SetProgressState(reinterpret_cast<HWND>(winId()), TBPF_NOPROGRESS);
@@ -94,7 +99,7 @@ void Window::on_timer_timeout()
 		taskbar_item_->SetProgressValue(reinterpret_cast<HWND>(winId()), sec_count_, sec_total_);
 	}
 	QTime time(0, sec_count_ / 60, sec_count_ % 60);
-	setWindowTitle(time.toString("mm:ss") + " - Tea timer");
+	setWindowTitle(time.toString("mm:ss") + " - " + kWindowTitle);
 	time_->blockSignals(true);
 	time_->setTime(time);
 	time_->blockSignals(false);
