@@ -4,7 +4,7 @@
 
 namespace
 {
-	const QString kWindowTitle{ "Windows tea timer" };
+	const QString kWindowTitle{ "Tea timer" };
 }
 
 Window::Window(QWidget* parent)

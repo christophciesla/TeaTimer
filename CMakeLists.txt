@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.7.0)
 
-project(WinTeaTimer VERSION 1.0.0 LANGUAGES CXX)
+project(TeaTimer VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,22 +9,27 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
-add_executable(WinTeaTimer WIN32
-    source/window.cpp
-    source/window.h
+set(WINDOW_HDRS source/window/window.h)
+set(WINDOW_SRCS source/window/window.cpp)
+
+add_executable(TeaTimer WIN32
+    ${WINDOW_HDRS}
+    ${WINDOW_SRCS}
     source/main.cpp
+    README.md
+    .gitignore
 )
 
-target_link_libraries(WinTeaTimer Qt5::Widgets Qt5::WinMain)
+target_link_libraries(TeaTimer Qt5::Widgets Qt5::WinMain)
 
-add_custom_command(TARGET WinTeaTimer POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Core> $<TARGET_FILE_DIR:WinTeaTimer>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE_DIR:WinTeaTimer>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE_DIR:WinTeaTimer>
+add_custom_command(TARGET TeaTimer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Core> $<TARGET_FILE_DIR:TeaTimer>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE_DIR:TeaTimer>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE_DIR:TeaTimer>
     )
