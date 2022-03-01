@@ -1,4 +1,4 @@
-# WinTeaTimer
+# TeaTimer
 
 This little tool locks your workstation after a defined time has elapsed so you never forget to have your tea while concentrated on coding ;-)
 
