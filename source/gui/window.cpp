@@ -1,6 +1,5 @@
 #include "gui/window.h"
-
-#include <Windows.h>
+#include "locker/lock_session.h"
 
 namespace gui
 {
@@ -114,7 +113,7 @@ namespace gui
         if (sec_count_ == 0)
         {
             StopTimer();
-            ::LockWorkStation();
+            locker::LockSession();
         }
     }
 

@@ -25,9 +25,15 @@ set(GUI_SRCS
     source/gui/taskbar.cpp
     )
 
+set(LOCKER_HDRS source/locker/lock_session.h)
+
+set(LOCKER_SRCS source/locker/lock_session.cpp)
+
 add_executable(TeaTimer WIN32
     ${GUI_HDRS}
     ${GUI_SRCS}
+    ${LOCKER_HDRS}
+    ${LOCKER_SRCS}
     source/main.cpp
     README.md
     .gitignore
