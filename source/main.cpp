@@ -1,14 +1,14 @@
 #include <QtGui>
 
-#include "window/window.h"
+#include "gui/window.h"
 
 int main(int argc, char* argv[])
 {
-	QApplication app{ argc, argv };
-	app.setApplicationName("Tea timer");
+    QApplication app{ argc, argv };
+    app.setApplicationName("Tea timer");
 
-	Window window{};
-	window.show();
+    gui::Window window{};
+    window.show();
 
-	return app.exec();
+    return app.exec();
 }
