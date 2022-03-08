@@ -3,7 +3,7 @@
 
 namespace locker
 {
-    void LockSession();
+void LockSession();
 }
 
 #endif // LOCKER_LOCK_SESSION_H

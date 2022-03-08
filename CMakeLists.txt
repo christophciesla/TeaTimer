@@ -11,7 +11,11 @@ set(CMAKE_AUTOUIC ON)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+if (WIN32)
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+else (WIN32)
+find_package(Qt5 COMPONENTS Core Gui Widgets DBus REQUIRED)
+endif (WIN32)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/source)
 
@@ -48,4 +52,6 @@ if(WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE_DIR:TeaTimer>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE_DIR:TeaTimer>
         )
+else (WIN32)
+    target_link_libraries(TeaTimer Qt::DBus)
 endif (WIN32)
