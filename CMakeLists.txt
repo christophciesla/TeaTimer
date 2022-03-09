@@ -53,5 +53,5 @@ if(WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE_DIR:TeaTimer>
         )
 else (WIN32)
-    target_link_libraries(TeaTimer Qt::DBus)
+    target_link_libraries(TeaTimer Qt5::DBus)
 endif (WIN32)
