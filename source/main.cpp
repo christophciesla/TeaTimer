@@ -5,7 +5,7 @@
 int main(int argc, char* argv[])
 {
     QApplication app{ argc, argv };
-    app.setApplicationName("Tea timer");
+    app.setApplicationName(QApplication::tr("Tea timer"));
 
     gui::Window window{};
     window.show();

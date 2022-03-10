@@ -3,11 +3,6 @@
 
 namespace gui
 {
-namespace
-{
-    const QString kWindowTitle{ "Tea timer" };
-}
-
 Window::Window(QWidget* parent)
     : QWidget(parent)
     , time_{ new QTimeEdit{} }
@@ -57,11 +52,11 @@ void Window::UpdateTitle()
 {
     if (running_)
     {
-        setWindowTitle(time_->time().toString("mm:ss") + " - " + kWindowTitle);
+        setWindowTitle(time_->time().toString("mm:ss") + " - " + QApplication::instance()->applicationName());
     }
     else
     {
-        setWindowTitle(kWindowTitle);
+        setWindowTitle(QString{});
     }
 }
 
@@ -141,10 +136,10 @@ void Window::LockSession()
     switch(error_code)
     {
     case locker::ErrorCode::DesktopEnvironmentNotSupported:
-        std::ignore = QMessageBox::critical(this, kWindowTitle, "Desktop environment is not supported.");
+        std::ignore = QMessageBox::critical(this, QString{}, tr("Desktop environment is not supported."));
         break;
     case locker::ErrorCode::SystemInaccessible:
-        std::ignore = QMessageBox::critical(this, kWindowTitle, "Cannot access system to lock session.");
+        std::ignore = QMessageBox::critical(this, QString{}, tr("Cannot access system to lock session."));
         break;
     case locker::ErrorCode::Success:
     // Intentional fall through
