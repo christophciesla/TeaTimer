@@ -12,12 +12,18 @@ set(CMAKE_AUTOUIC ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 if (WIN32)
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets LinguistTools REQUIRED)
 else (WIN32)
-find_package(Qt5 COMPONENTS Core Gui Widgets DBus REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets DBus LinguistTools REQUIRED)
 endif (WIN32)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/source)
+
+qt5_create_translation(QM_FILES
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/translations/TeaTimer_en.ts
+    ${CMAKE_SOURCE_DIR}/translations/TeaTimer_de.ts
+    )
 
 set(GUI_HDRS
     source/gui/window.h
@@ -39,6 +45,7 @@ add_executable(TeaTimer WIN32
     ${LOCKER_HDRS}
     ${LOCKER_SRCS}
     source/main.cpp
+    ${QM_FILES}
     README.md
     .gitignore
 )
