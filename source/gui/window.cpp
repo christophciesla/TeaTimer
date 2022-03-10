@@ -113,7 +113,7 @@ void Window::TimerTimeout()
     if (sec_count_ == 0)
     {
         StopTimer();
-        locker::LockSession();
+        LockSession();
     }
 }
 
@@ -132,6 +132,24 @@ void Window::keyPressEvent(QKeyEvent* ev)
         {
             StopTimer();
         }
+    }
+}
+
+void Window::LockSession()
+{
+    const locker::ErrorCode error_code{locker::LockSession()};
+    switch(error_code)
+    {
+    case locker::ErrorCode::DesktopEnvironmentNotSupported:
+        std::ignore = QMessageBox::critical(this, kWindowTitle, "Desktop environment is not supported.");
+        break;
+    case locker::ErrorCode::SystemInaccessible:
+        std::ignore = QMessageBox::critical(this, kWindowTitle, "Cannot access system to lock session.");
+        break;
+    case locker::ErrorCode::Success:
+    // Intentional fall through
+    default:
+        break;
     }
 }
 }

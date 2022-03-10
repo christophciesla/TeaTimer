@@ -18,12 +18,12 @@ struct LockMethod
     QString interface{};
 };
 
-bool LockSessionImpl_linux()
+ErrorCode LockSessionImpl_linux()
 {
     QDBusConnection bus = QDBusConnection::sessionBus();
     if(!bus.isConnected())
     {
-        return false;
+        return ErrorCode::SystemInaccessible;
     }
     QVector<LockMethod> lock_methods{
         LockMethod{"org.gnome.ScreenSaver", "/org/gnome/ScreenSaver", "org.gnome.ScreenSaver"}
@@ -36,20 +36,21 @@ bool LockSessionImpl_linux()
         if (screenSaverInterface.isValid())
         {
             std::ignore = screenSaverInterface.asyncCall("Lock");
-            return true;
+            return ErrorCode::Success;
         }
     }
-    return false;
+    return ErrorCode::DesktopEnvironmentNotSupported;
 }
 #endif
 }
 
-void LockSession()
+ErrorCode LockSession()
 {
 #ifdef WIN32
     ::LockWorkStation();
+    return ErrorCode::Success;
 #else
-    std::ignore = LockSessionImpl_linux();
+    return LockSessionImpl_linux();
 #endif
 }
 }

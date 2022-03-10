@@ -39,6 +39,8 @@ private:
     void TimerTimeout();
 
     void keyPressEvent(QKeyEvent* ev) override;
+
+    void LockSession();
 };
 }
 
