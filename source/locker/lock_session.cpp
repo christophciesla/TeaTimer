@@ -27,7 +27,8 @@ ErrorCode LockSessionImpl_linux()
     }
     QVector<LockMethod> lock_methods{
         LockMethod{"org.gnome.ScreenSaver", "/org/gnome/ScreenSaver", "org.gnome.ScreenSaver"},
-        LockMethod{"org.mate.ScreenSaver", "/", "org.mate.ScreenSaver"}
+        LockMethod{"org.mate.ScreenSaver", "/", "org.mate.ScreenSaver"},
+        LockMethod{"org.xfce.ScreenSaver", "/", "org.xfce.Screensaver"}
     };
 
     for(const auto& lock_method: lock_methods)
