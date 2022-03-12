@@ -27,7 +27,7 @@ private:
     std::int32_t sec_total_;
     std::int32_t sec_count_;
 
-    Taskbar* taskbar_;
+    gui::Taskbar* taskbar_;
 
     void UpdateTitle();
     void UpdateStartButton(const QTime& time);

@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
     {
         std::ignore = app.installTranslator(&translator);
     }
+
     app.setApplicationName(QApplication::tr("Tea timer"));
 
     gui::Window window{};

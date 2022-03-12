@@ -10,7 +10,7 @@
     </message>
 </context>
 <context>
-    <name>Window</name>
+    <name>gui::Window</name>
     <message>
         <location filename="../source/gui/window.cpp" line="9"/>
         <source>Start</source>

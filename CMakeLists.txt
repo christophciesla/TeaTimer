@@ -23,6 +23,7 @@ qt5_create_translation(QM_FILES
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/translations/TeaTimer_en.ts
     ${CMAKE_SOURCE_DIR}/translations/TeaTimer_de.ts
+    OPTIONS "-I ${CMAKE_CURRENT_SOURCE_DIR}/source"
     )
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/translations/translations.qrc"
