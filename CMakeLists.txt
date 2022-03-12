@@ -12,26 +12,35 @@ set(CMAKE_AUTOUIC ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 if (WIN32)
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets LinguistTools REQUIRED)
 else (WIN32)
-find_package(Qt5 COMPONENTS Core Gui Widgets DBus REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets DBus LinguistTools REQUIRED)
 endif (WIN32)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/source)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/source)
+
+configure_file("${CMAKE_SOURCE_DIR}/translations/translations.qrc"
+        "${CMAKE_BINARY_DIR}/translations.qrc" COPYONLY)
 
 set(GUI_HDRS
     source/gui/window.h
     source/gui/taskbar.h
     )
-
 set(GUI_SRCS
     source/gui/window.cpp
     source/gui/taskbar.cpp
     )
 
 set(LOCKER_HDRS source/locker/lock_session.h)
-
 set(LOCKER_SRCS source/locker/lock_session.cpp)
+
+qt5_create_translation(QM_FILES
+    ${CMAKE_SOURCE_DIR}/source/main.cpp
+    ${GUI_SRCS}
+    ${CMAKE_SOURCE_DIR}/translations/TeaTimer_en.ts
+    ${CMAKE_SOURCE_DIR}/translations/TeaTimer_de.ts
+    OPTIONS "-I ${CMAKE_CURRENT_SOURCE_DIR}/source"
+    )
 
 add_executable(TeaTimer WIN32
     ${GUI_HDRS}
@@ -39,6 +48,8 @@ add_executable(TeaTimer WIN32
     ${LOCKER_HDRS}
     ${LOCKER_SRCS}
     source/main.cpp
+    ${QM_FILES}
+    "${CMAKE_BINARY_DIR}/translations.qrc"
     README.md
     .gitignore
 )

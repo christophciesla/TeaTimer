@@ -14,7 +14,7 @@ Window::Window(QWidget* parent)
     , running_{ false }
     , sec_total_{ 0 }
     , sec_count_{ 0 }
-    , taskbar_{ new Taskbar{this} }
+    , taskbar_{ new gui::Taskbar{this} }
 {
     UpdateTitle();
 

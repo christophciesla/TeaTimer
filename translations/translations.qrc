@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="translations">
+        <file>TeaTimer_en.qm</file>
+        <file>TeaTimer_de.qm</file>
+    </qresource>
+</RCC>
