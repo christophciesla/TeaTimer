@@ -12,27 +12,27 @@
 <context>
     <name>gui::Window</name>
     <message>
-        <location filename="../source/gui/window.cpp" line="9"/>
+        <location filename="../source/gui/window.cpp" line="11"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../source/gui/window.cpp" line="10"/>
+        <location filename="../source/gui/window.cpp" line="12"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../source/gui/window.cpp" line="35"/>
+        <location filename="../source/gui/window.cpp" line="43"/>
         <source>Time:</source>
         <translation>Time:</translation>
     </message>
     <message>
-        <location filename="../source/gui/window.cpp" line="139"/>
+        <location filename="../source/gui/window.cpp" line="134"/>
         <source>Desktop environment is not supported.</source>
         <translation>Desktop environment is not supported.</translation>
     </message>
     <message>
-        <location filename="../source/gui/window.cpp" line="142"/>
+        <location filename="../source/gui/window.cpp" line="137"/>
         <source>Cannot access system to lock session.</source>
         <translation>Cannot access system to lock session.</translation>
     </message>
