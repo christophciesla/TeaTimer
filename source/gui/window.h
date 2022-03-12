@@ -18,6 +18,8 @@ public:
 private:
     QTimeEdit* time_;
 
+    QAction* start_action_;
+    QAction* stop_action_;
     QPushButton* start_button_;
     QPushButton* stop_button_;
 
@@ -30,15 +32,13 @@ private:
     Taskbar* taskbar_;
 
     void UpdateTitle();
-    void UpdateStartButton(const QTime& time);
-    void UpdateWidgets();
+    void UpdateStartButtonAndAction(const QTime& time);
+    void UpdateWidgetsAndActions();
     void UpdateTaskbar();
 
     void StartTimer();
     void StopTimer();
     void TimerTimeout();
-
-    void keyPressEvent(QKeyEvent* ev) override;
 
     void LockSession();
 };

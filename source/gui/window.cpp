@@ -6,8 +6,10 @@ namespace gui
 Window::Window(QWidget* parent)
     : QWidget(parent)
     , time_{ new QTimeEdit{} }
-    , start_button_{ new QPushButton{tr("Start") } }
-    , stop_button_{ new QPushButton{tr("Stop")} }
+    , start_action_{ new QAction{ this } }
+    , stop_action_{ new QAction{ this } }
+    , start_button_{ new QPushButton {tr("Start") } }
+    , stop_button_{ new QPushButton{ tr("Stop")} }
     , timer_{}
     , running_{ false }
     , sec_total_{ 0 }
@@ -25,6 +27,12 @@ Window::Window(QWidget* parent)
     timer_.setSingleShot(false);
     timer_.setInterval(1000);
 
+    start_action_->setShortcuts({ Qt::Key_Return, Qt::Key_Enter });
+    start_action_->setEnabled(false);
+    stop_action_->setShortcut(Qt::Key_Escape);
+    stop_action_->setEnabled(false);
+    addAction(start_action_);
+    addAction(stop_action_);
     start_button_->setEnabled(false);
     stop_button_->setEnabled(false);
 
@@ -42,9 +50,11 @@ Window::Window(QWidget* parent)
     push_button_layout->addWidget(stop_button_);
     layout->addLayout(push_button_layout);
 
-    std::ignore = connect(start_button_, &QPushButton::clicked, [this]() { StartTimer(); });
-    std::ignore = connect(stop_button_, &QPushButton::clicked, [this]() { StopTimer(); });
-    std::ignore = connect(time_, &QTimeEdit::timeChanged, [this](const QTime& time) {UpdateStartButton(time); });
+    std::ignore = connect(start_action_, &QAction::triggered, [this](bool) { StartTimer(); });
+    std::ignore = connect(start_button_, &QPushButton::clicked, [this]() { start_action_->trigger(); });
+    std::ignore = connect(stop_action_, &QAction::triggered, [this](bool) { StopTimer(); });
+    std::ignore = connect(stop_button_, &QPushButton::clicked, [this]() { stop_action_->trigger(); });
+    std::ignore = connect(time_, &QTimeEdit::timeChanged, [this](const QTime& time) {UpdateStartButtonAndAction(time); });
     std::ignore = connect(&timer_, &QTimer::timeout, [this]() { TimerTimeout(); });
 }
 
@@ -60,14 +70,16 @@ void Window::UpdateTitle()
     }
 }
 
-void Window::UpdateStartButton(const QTime& time)
+void Window::UpdateStartButtonAndAction(const QTime& time)
 {
+    start_action_->setEnabled(!running_);
     start_button_->setEnabled(!running_ && (time.msecsSinceStartOfDay() > 0));
 }
 
-void Window::UpdateWidgets()
+void Window::UpdateWidgetsAndActions()
 {
-    UpdateStartButton(time_->time());
+    UpdateStartButtonAndAction(time_->time());
+    stop_action_->setEnabled(running_);
     stop_button_->setEnabled(running_);
     time_->setReadOnly(running_);
 }
@@ -85,7 +97,7 @@ void Window::StartTimer()
     timer_.start();
     UpdateTitle();
     UpdateTaskbar();
-    UpdateWidgets();
+    UpdateWidgetsAndActions();
 }
 
 void Window::StopTimer()
@@ -96,7 +108,7 @@ void Window::StopTimer()
     sec_total_ = 0;
     UpdateTitle();
     UpdateTaskbar();
-    UpdateWidgets();
+    UpdateWidgetsAndActions();
 }
 
 void Window::TimerTimeout()
@@ -109,24 +121,6 @@ void Window::TimerTimeout()
     {
         StopTimer();
         LockSession();
-    }
-}
-
-void Window::keyPressEvent(QKeyEvent* ev)
-{
-    if ((ev->key() == Qt::Key_Return) || (ev->key() == Qt::Key_Enter))
-    {
-        if (!running_)
-        {
-            StartTimer();
-        }
-    }
-    if (ev->key() == Qt::Key_Escape)
-    {
-        if (running_)
-        {
-            StopTimer();
-        }
     }
 }
 
