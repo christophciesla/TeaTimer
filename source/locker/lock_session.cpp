@@ -26,7 +26,8 @@ ErrorCode LockSessionImpl_linux()
         return ErrorCode::SystemInaccessible;
     }
     QVector<LockMethod> lock_methods{
-        LockMethod{"org.gnome.ScreenSaver", "/org/gnome/ScreenSaver", "org.gnome.ScreenSaver"}
+        LockMethod{"org.gnome.ScreenSaver", "/org/gnome/ScreenSaver", "org.gnome.ScreenSaver"},
+        LockMethod{"org.mate.ScreenSaver", "/", "org.mate.ScreenSaver"}
     };
 
     for(const auto& lock_method: lock_methods)
