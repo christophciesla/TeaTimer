@@ -72,8 +72,9 @@ void Window::UpdateTitle()
 
 void Window::UpdateStartButtonAndAction(const QTime& time)
 {
-    start_action_->setEnabled(!running_);
-    start_button_->setEnabled(!running_ && (time.msecsSinceStartOfDay() > 0));
+    const bool enable{ !running_ && (time.msecsSinceStartOfDay() > 0) };
+    start_action_->setEnabled(enable);
+    start_button_->setEnabled(enable);
 }
 
 void Window::UpdateWidgetsAndActions()
