@@ -4,7 +4,7 @@
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../source/main.cpp" line="8"/>
+        <location filename="../source/main.cpp" line="16"/>
         <source>Tea timer</source>
         <translation>Tea timer</translation>
     </message>
