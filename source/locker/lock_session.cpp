@@ -47,7 +47,12 @@ ErrorCode LockSessionImpl_DBus()
 
 ErrorCode LockSessionImpl_XScreenSaver()
 {
-    const int return_value{QProcess::execute("xscreensaver-command", {"-lock"})};
+    int return_value{QProcess::execute("xscreensaver-command", {"-lock"})};
+    if (return_value >= 0)
+    {
+        return ErrorCode::Success;
+    }
+    return_value = QProcess::execute("xdg-screensaver", {"lock"});
     if (return_value >= 0)
     {
         return ErrorCode::Success;
