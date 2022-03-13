@@ -57,6 +57,11 @@ ErrorCode LockSessionImpl_XScreenSaver()
     {
         return ErrorCode::Success;
     }
+    return_value = QProcess::execute("cinnamon-screensaver-command", {"--lock"});
+    if (return_value >= 0)
+    {
+        return ErrorCode::Success;
+    }
     return ErrorCode::DesktopEnvironmentNotSupported;
 }
 
