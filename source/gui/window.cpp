@@ -50,12 +50,12 @@ Window::Window(QWidget* parent)
     push_button_layout->addWidget(stop_button_);
     layout->addLayout(push_button_layout);
 
-    std::ignore = connect(start_action_, &QAction::triggered, [this](bool) { StartTimer(); });
-    std::ignore = connect(start_button_, &QPushButton::clicked, [this]() { start_action_->trigger(); });
-    std::ignore = connect(stop_action_, &QAction::triggered, [this](bool) { StopTimer(); });
-    std::ignore = connect(stop_button_, &QPushButton::clicked, [this]() { stop_action_->trigger(); });
-    std::ignore = connect(time_, &QTimeEdit::timeChanged, [this](const QTime& time) {UpdateStartButtonAndAction(time); });
-    std::ignore = connect(&timer_, &QTimer::timeout, [this]() { TimerTimeout(); });
+    std::ignore = connect(start_action_, &QAction::triggered, this, &Window::StartTimer);
+    std::ignore = connect(start_button_, &QPushButton::clicked, this, &Window::StartTimer);
+    std::ignore = connect(stop_action_, &QAction::triggered, this, &Window::StopTimer);
+    std::ignore = connect(stop_button_, &QPushButton::clicked, this, &Window::StopTimer);
+    std::ignore = connect(time_, &QTimeEdit::timeChanged, this, &Window::UpdateStartButtonAndAction);
+    std::ignore = connect(&timer_, &QTimer::timeout, this, &Window::TimerTimeout);
 }
 
 void Window::UpdateTitle()
